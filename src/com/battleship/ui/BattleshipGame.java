@@ -1,5 +1,6 @@
 package com.battleship.ui;
 
+// This is our main class that we will execute always
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
