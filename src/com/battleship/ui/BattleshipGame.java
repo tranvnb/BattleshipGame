@@ -76,10 +76,7 @@ public class BattleshipGame {
 		panel.setLayout(new GridLayout(8, 8, 2, 2));
 		
 
-	
-		
-
-		
+		// create 64 Panel
 		JPanel arrayPanel[] = new JPanel[64];
 		
 		for(int i = 0; i < 64; i++) {
@@ -88,7 +85,7 @@ public class BattleshipGame {
 		
 		
 		
-
+		// create add 44 panel to main panel
 		for(int i = 0; i < 64; i++) {
 			arrayPanel[i].setBorder(new LineBorder(new Color(0, 0, 0)));
 			arrayPanel[i].setOpaque(false);
@@ -96,6 +93,7 @@ public class BattleshipGame {
 			arrayPanel[i].setLayout(new BorderLayout(0, 0));
 		}
 		
+		// create 64 label and add 64 label to 64 panel
 		JLabel labelArray[] = new JLabel[64];
 		for(int i = 0; i < 64; i++) {
 			labelArray[i] = new JLabel("");
@@ -107,7 +105,6 @@ public class BattleshipGame {
 	
 		 
 		// add even listener on label
-		
 		for(int i = 0; i < 64; i++) {
 			labelArray[i].addMouseListener(new MouseAdapter() {
 				@Override
