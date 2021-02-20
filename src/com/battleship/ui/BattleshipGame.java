@@ -21,12 +21,17 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
+import javax.swing.JOptionPane;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import java.awt.CardLayout;
+import java.awt.FlowLayout;
 
 public class BattleshipGame {
 
 	private JFrame frame;
+	private GameTimer timer;
+	JLayeredPane layeredPane;
 
 	/**
 	 * Launch the application.
@@ -43,12 +48,33 @@ public class BattleshipGame {
 			}
 		});
 	}
+	
+
+	public JLayeredPane getLayeredPane() {
+		return layeredPane;
+	}
+
+
 
 	/**
 	 * Create the application.
 	 */
 	public BattleshipGame() {
 		initialize();
+		initializeTimer();
+	}
+	
+	private void initializeTimer() {
+		///TODO: this call back function should be put on Controller file
+		timer = new GameTimer(this.getLayeredPane(), new GameTimer.CallbackFunction() {
+			
+			@Override
+			public void endGame() {
+				JOptionPane.showMessageDialog(null, "Sorry, you lost!");
+				///TODO: Playing sound
+				
+			}
+		});		
 	}
 
 	/**
@@ -61,7 +87,7 @@ public class BattleshipGame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane = new JLayeredPane();
 		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
 		layeredPane.setLayout(null);
 		
@@ -122,5 +148,4 @@ public class BattleshipGame {
 
 
 	}
-
 }
