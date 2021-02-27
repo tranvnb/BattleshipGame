@@ -10,6 +10,9 @@ import javax.swing.JLabel;
 import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
+
+import com.battleship.model.Model;
+
 import javax.swing.JTextField;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -18,6 +21,9 @@ import java.awt.Canvas;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
@@ -144,8 +150,55 @@ public class BattleshipGame {
 			});
 		}
 		
-		
-
-
+		//spawning 3 ships 
+		int numShips = 3;
+		int shipsSunk =0;
+		int boardSize = 7;
+		int shipLength = 3;
+		Model[] ships = new Model[numShips];
+		do {
+		for(int i=0; i<numShips;i++) {
+			ships[i] = new Model(generateShip(boardSize, shipLength));
+		}} while(collison(ships));
+	
 	}
+		public static String[] generateShip(int boardSize, int shipLength) {
+			double direction = Math.floor(Math.random()*2);
+			int row, col;
+			if(direction == 1) {
+				row = (int)Math.floor(Math.random() * boardSize);
+				col = (int)Math.floor(Math.random() * (boardSize - shipLength + 1));
+			}
+			else { // vertical
+				row = (int)Math.floor(Math.random() * (boardSize - shipLength + 1));
+				col = (int)Math.floor(Math.random() * boardSize);
+			}
+			
+			String[] newShipLocs = new String[shipLength];
+			for (int i = 0; i < shipLength; i++) {
+				if (direction == 1) {
+					newShipLocs[i] = (row + "" + (col + i));
+				} else {
+					newShipLocs[i] =((row + i) + "" + col);
+				}
+			}
+			return newShipLocs;
+		}
+		public static boolean collison(Model[] ships) {
+			List<String> allLocs = new ArrayList<>();
+			for(int i=0;i<ships.length;i++) {
+				for(int j=0; j<ships[i].getLoc().length;j++) {
+					if(allLocs.contains(ships[i].getLoc()[j])) {
+						return true;
+					}		
+				}
+				Collections.addAll(allLocs, ships[i].getLoc());
+			}
+			System.out.println("ships locations: ");
+			System.out.println();
+			for(String i : allLocs) {
+				System.out.print(i + " ");
+			}
+			return false;
+		}
 }
