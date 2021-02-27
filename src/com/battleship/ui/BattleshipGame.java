@@ -130,6 +130,7 @@ public class BattleshipGame {
 		for(int i = 0; i < 64; i++) {
 			labelArray[i] = new JLabel("");
 			arrayPanel[i].add(labelArray[i]);
+			labelArray[i].setName(String.valueOf(i));
 			labelArray[i].setOpaque(false);
 		}
 		
@@ -141,11 +142,24 @@ public class BattleshipGame {
 			labelArray[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-					labelArray[1].setIcon(new ImageIcon("C:/Users/Gam/git/BattleshipGame/src/com/battleship/ui/ship.png")); //change the path to your image
-					
-					//centered the image on the label
-					labelArray[1].setHorizontalAlignment(SwingConstants.CENTER);
-					labelArray[1].setVerticalAlignment(SwingConstants.CENTER);
+					if(arg0.getSource() instanceof JLabel) {
+						String text = ((JLabel) arg0.getSource()).getName();
+						
+						//----------> UI interaction methods go here
+						//parseGuess method: from 0 to 49 to 00 to 66
+						//checkGuess method: check if guess hit or miss
+						
+						//change the image according to checkGuess logic
+						((JLabel) arg0.getSource()).setIcon(new ImageIcon("images/ship.png")); //change the path to your image
+						
+						//centered the image on the label
+						((JLabel) arg0.getSource()).setHorizontalAlignment(SwingConstants.CENTER);
+						((JLabel) arg0.getSource()).setVerticalAlignment(SwingConstants.CENTER);
+						JOptionPane.showMessageDialog(null, text); //testing click
+						
+						//checkSunk: check if any ship is sunk > redirect to view.Display
+						//checkifWon: check shipsSunk == NumShips > redirect to view.Display
+					}	
 				}
 			});
 		}
@@ -162,6 +176,7 @@ public class BattleshipGame {
 		}} while(collison(ships));
 	
 	}
+		//generate random locations, 00 to 66
 		public static String[] generateShip(int boardSize, int shipLength) {
 			double direction = Math.floor(Math.random()*2);
 			int row, col;
@@ -184,6 +199,7 @@ public class BattleshipGame {
 			}
 			return newShipLocs;
 		}
+		//collision check method
 		public static boolean collison(Model[] ships) {
 			List<String> allLocs = new ArrayList<>();
 			for(int i=0;i<ships.length;i++) {
