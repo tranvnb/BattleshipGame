@@ -6,8 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
@@ -15,6 +19,8 @@ import com.battleship.model.Model;
 
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Canvas;
@@ -55,6 +61,8 @@ public class BattleshipGame {
 		});
 	}
 	
+	
+	
 
 	public JLayeredPane getLayeredPane() {
 		return layeredPane;
@@ -93,41 +101,53 @@ public class BattleshipGame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
+		
 		layeredPane = new JLayeredPane();
 		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
 		layeredPane.setLayout(null);
+		
+		
 		
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		layeredPane.setLayer(panel, 0);
-		panel.setBounds(170, 98, 677, 677);
+		panel.setBounds(170, 79, 677, 670);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panel.setBackground(Color.LIGHT_GRAY);
 		layeredPane.add(panel);
-		panel.setLayout(new GridLayout(8, 8, 2, 2));
+		panel.setLayout(new GridLayout(7, 7, 2, 2));
+		
+		//add image
+		JLabel label = new JLabel("");
+		ImageIcon img = new ImageIcon(this.getClass().getResource("/board.jpg"));
+		label.setIcon(img);
+		label.setBounds(10, 10, 1015, 898);
+		label.setVisible(true);
+		label.setLayout(new GridLayout(9, 11, 2, 2));
+		frame.getContentPane().add(label, BorderLayout.SOUTH);
 		
 
-		// create 64 Panel
-		JPanel arrayPanel[] = new JPanel[64];
+		// create 49 Panel
+		JPanel arrayPanel[] = new JPanel[49];
 		
-		for(int i = 0; i < 64; i++) {
+		for(int i = 0; i < 49; i++) {
 			arrayPanel[i] = new JPanel();
 		}
 		
 		
 		
 		// create add 44 panel to main panel
-		for(int i = 0; i < 64; i++) {
+		for(int i = 0; i < 49; i++) {
 			arrayPanel[i].setBorder(new LineBorder(new Color(0, 0, 0)));
 			arrayPanel[i].setOpaque(false);
 			panel.add(arrayPanel[i]);
 			arrayPanel[i].setLayout(new BorderLayout(0, 0));
 		}
 		
-		// create 64 label and add 64 label to 64 panel
-		JLabel labelArray[] = new JLabel[64];
-		for(int i = 0; i < 64; i++) {
+		// create 49 label and add 49 label to 49 panel
+		JLabel labelArray[] = new JLabel[49];
+		for(int i = 0; i < 49; i++) {
 			labelArray[i] = new JLabel("");
 			arrayPanel[i].add(labelArray[i]);
 			labelArray[i].setName(String.valueOf(i));
@@ -138,7 +158,7 @@ public class BattleshipGame {
 	
 		 
 		// add even listener on label
-		for(int i = 0; i < 64; i++) {
+		for(int i = 0; i < 49; i++) {
 			labelArray[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
@@ -176,6 +196,31 @@ public class BattleshipGame {
 		}} while(collison(ships));
 	
 	}
+	
+	
+	
+	class ImagePanel extends JPanel {
+
+		  private Image img;
+
+		  public ImagePanel(String img) {
+		    this(new ImageIcon(img).getImage());
+		  }
+
+		  public ImagePanel(Image img) {
+		    this.img = img;
+		    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
+		    setPreferredSize(size);
+		    setMinimumSize(size);
+		    setMaximumSize(size);
+		    setSize(size);
+		    setLayout(null);
+		  }
+
+		  public void paintComponent(Graphics g) {
+		    g.drawImage(img, 0, 0, null);
+		  }
+		}
 		//generate random locations, 00 to 66
 		public static String[] generateShip(int boardSize, int shipLength) {
 			double direction = Math.floor(Math.random()*2);
