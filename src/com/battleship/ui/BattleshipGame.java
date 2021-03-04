@@ -45,7 +45,9 @@ public class BattleshipGame {
 	private JFrame frame;
 	private GameTimer timer;
 	JLayeredPane layeredPane;
-	Controller controller = new Controller();
+	Controller controller;
+	public static Model model;
+	Model[] ships;
 
 	/**
 	 * Launch the application.
@@ -162,26 +164,54 @@ public class BattleshipGame {
 	
 	
 		 
+		
+		//spawning 3 ships 
+		int numShips = 3;
+		int shipsSunk = 0;
+		int boardSize = 7;
+		int shipLength = 3;
+		
+		ships = new Model[numShips];
+		do {
+			for(int i=0; i<numShips; i++) {
+				ships[i] = new Model(generateShip(boardSize, shipLength));
+			}
+		} while(collison(ships));
+		
+		
+		
+		// Initializing and passing model to controller
+		controller = new Controller(model);
+		
 		// add even listener on label
 		for(int i = 0; i < 49; i++) {
 			labelArray[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
 					if(arg0.getSource() instanceof JLabel) {
-						String text = ((JLabel) arg0.getSource()).getName();
-						System.out.println(text);
+						String guessAsInt = ((JLabel) arg0.getSource()).getName();
+						boolean hit;
 						//----------> UI interaction methods go here
 						//parseGuess method: from 0 to 49 to 00 to 66
-						
 						//checkGuess method: check if guess hit or miss
 						
+						// Parsing is done within the controller package using helper class
+						// This also checks if its a hit or miss
+						hit = controller.processGuess(guessAsInt); 
+						
 						//change the image according to checkGuess logic
-						((JLabel) arg0.getSource()).setIcon(new ImageIcon("images/ship.png")); //change the path to your image
+						if(hit) {
+							((JLabel) arg0.getSource()).setIcon(new ImageIcon("images/ship.png")); //change the path to your image
+						}
+						else {
+							((JLabel) arg0.getSource()).setIcon(new ImageIcon("images/miss.png")); //change the path to your image
+						}
+						
 						
 						//centered the image on the label
 						((JLabel) arg0.getSource()).setHorizontalAlignment(SwingConstants.CENTER);
 						((JLabel) arg0.getSource()).setVerticalAlignment(SwingConstants.CENTER);
-						JOptionPane.showMessageDialog(null, text); //testing click
+						JOptionPane.showMessageDialog(null, guessAsInt); //testing click
 						
 						//checkSunk: check if any ship is sunk > redirect to view.Display
 						//checkifWon: check shipsSunk == NumShips > redirect to view.Display
@@ -190,21 +220,7 @@ public class BattleshipGame {
 			});
 		}
 		
-		//spawning 3 ships 
-		int numShips = 3;
-		int shipsSunk =0;
-		int boardSize = 7;
-		int shipLength = 3;
-		Model[] ships = new Model[numShips];
-		do {
-		for(int i=0; i<numShips;i++) {
-			ships[i] = new Model(generateShip(boardSize, shipLength));
-		}} while(collison(ships));
-	
 	}
-	
-	
-	
 	
 		//generate random locations, 00 to 66
 		public static String[] generateShip(int boardSize, int shipLength) {
@@ -229,6 +245,7 @@ public class BattleshipGame {
 			}
 			return newShipLocs;
 		}
+	
 		//collision check method
 		public static boolean collison(Model[] ships) {
 			List<String> allLocs = new ArrayList<>();
@@ -240,9 +257,19 @@ public class BattleshipGame {
 				}
 				Collections.addAll(allLocs, ships[i].getLoc());
 			}
+			
+			// Here I used allLocs to create a String Array
+			// This String array will be used to create an object of model class
+			String[] locsArray = new String[9];
+			for(int i = 0; i < locsArray.length; i++) {
+				locsArray[i] = allLocs.get(i);
+			}
+			
+			model = new Model(locsArray);
+			
 			System.out.println("ships locations: ");
 			System.out.println();
-			for(String i : allLocs) {
+			for(String i : locsArray) {
 				System.out.print(i + " ");
 			}
 			return false;

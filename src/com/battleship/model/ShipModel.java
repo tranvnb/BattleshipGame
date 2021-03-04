@@ -7,8 +7,8 @@ public class ShipModel {
     private int positionY;
 
     public ShipModel() {
-        this.positionX = Helper.randomizePosition(8);
-        this.positionY = Helper.randomizePosition(8);
+        this.positionX = Helper.randomizePosition(7);
+        this.positionY = Helper.randomizePosition(7);
     }
 
     public int getPositionX() {

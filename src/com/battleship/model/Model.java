@@ -4,57 +4,68 @@ package com.battleship.model;
 public class Model {
 
 	int boardSize = 7;
-	int numShips = 3;
+	public int numShips = 9;
 	int shipLength = 3;
-	int shipsSunk = 0;
+	public int shipsSunk = 0;
 		
 	int[] model = {boardSize, numShips, shipLength, shipsSunk};
-
 	
-	
-	private String[]locs;
+	private String[] locs;
 	
 	// TODO: Generate 9 "no" if needed
 	// Move Model class functions or data members from battleship game
-	private String[]hits = {"no","no","no"};
+	private String[]hits = {
+			"no","no","no",
+			"no","no","no",
+			"no","no","no",
+			};
 	
-	public Model() {
-		
-	}
+	
 	public Model(String[]loc) {
 		this.locs= loc;
 	}
+	
 	public String[] getLoc() {
 		return this.locs;
 	}
+	
 	public String[] getHit() {
 		return this.hits;
 	}
+	
 	public void setLoc(String[] loc) {
 		this.locs =loc;
 	}
+	
 	public void setHit(String[] hit) {
 		this.hits = hit;
 	}
 	
-	
-	
-	public boolean isSunk() {
-		for(int i =0; i<hits.length; i++) {
-			if(!"hit".equals(hits[i])) {
+	public boolean isSunk(int index) {
+		for(int i = 0; i < hits.length; i++) {
+			if(!this.hits[index].equals(hits[i])) {
 				return false;
 			}
 		}
 		return true;
 	}
 	
-	public boolean guess(String guess) {
+	public boolean fireGuess(String guess) {
+		
 		for(int i=0; i<locs.length; i++) {
 			if(guess.equals(locs[i])){
-				this.hits[i] = "hit";
-				return true;
+				if(this.hits[i].equals("hit")) {
+					System.out.println("Already hit");
+				}
+				else {
+					this.hits[i] = "hit";
+					
+					shipsSunk++;
+					return true;
+				}
 			}
 		}
+		System.out.println("You missed");
 		return false;
 	}
 	
@@ -62,5 +73,5 @@ public class Model {
 	public String toString() {
 		return this.locs[0] + " " + this.locs[1] + " " + this.locs[2] + " " +
 				this.hits[0] + " " + this.hits[1] + " " + this.hits[2] + " ";
-	}
+	}	
 }
