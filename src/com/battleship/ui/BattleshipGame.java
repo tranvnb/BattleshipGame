@@ -89,6 +89,7 @@ public class BattleshipGame {
 				
 			}
 		});		
+		layeredPane.add(timer, Integer.valueOf(2));
 	}
 
 	/**
@@ -112,20 +113,23 @@ public class BattleshipGame {
 		panel.setOpaque(false);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		layeredPane.setLayer(panel, 0);
-		panel.setBounds(170, 79, 677, 678);
+		panel.setBounds(180, 124, 677, 676);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panel.setBackground(Color.LIGHT_GRAY);
-		layeredPane.add(panel);
+		layeredPane.add(panel, Integer.valueOf(1));
 		panel.setLayout(new GridLayout(7, 7, 2, 2));
 		
-		//add image
+		// add background image
 		JLabel label = new JLabel("");
 		ImageIcon img = new ImageIcon(this.getClass().getResource("/board.jpg"));
 		label.setIcon(img);
 		label.setBounds(10, 10, 1015, 898);
-		label.setVisible(true);
+		
 		label.setLayout(new GridLayout(9, 11, 2, 2));
-		frame.getContentPane().add(label, BorderLayout.SOUTH);
+		label.setOpaque(false);
+		layeredPane.add(label, Integer.valueOf(0));
+		
+		
 		
 
 		// create 49 Panel
