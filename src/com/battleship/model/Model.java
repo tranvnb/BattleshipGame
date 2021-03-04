@@ -63,6 +63,7 @@ public class Model {
 			if(guess.equals(locs[i])){
 				if(this.hits[i].equals("hit")) {
 					System.out.println("Already hit");
+					return true;
 				}
 				else {
 					this.hits[i] = "hit";
