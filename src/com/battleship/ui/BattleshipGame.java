@@ -112,7 +112,7 @@ public class BattleshipGame {
 		panel.setOpaque(false);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		layeredPane.setLayer(panel, 0);
-		panel.setBounds(170, 79, 677, 670);
+		panel.setBounds(170, 79, 677, 678);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panel.setBackground(Color.LIGHT_GRAY);
 		layeredPane.add(panel);
@@ -199,28 +199,7 @@ public class BattleshipGame {
 	
 	
 	
-	class ImagePanel extends JPanel {
-
-		  private Image img;
-
-		  public ImagePanel(String img) {
-		    this(new ImageIcon(img).getImage());
-		  }
-
-		  public ImagePanel(Image img) {
-		    this.img = img;
-		    Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-		    setPreferredSize(size);
-		    setMinimumSize(size);
-		    setMaximumSize(size);
-		    setSize(size);
-		    setLayout(null);
-		  }
-
-		  public void paintComponent(Graphics g) {
-		    g.drawImage(img, 0, 0, null);
-		  }
-		}
+	
 		//generate random locations, 00 to 66
 		public static String[] generateShip(int boardSize, int shipLength) {
 			double direction = Math.floor(Math.random()*2);
