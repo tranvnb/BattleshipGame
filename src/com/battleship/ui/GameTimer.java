@@ -33,7 +33,7 @@ public class GameTimer extends JPanel{
 		this.callback = callback;
 		
 		this.gameBoard = gameBoard;		
-		this.setBounds(30, 30, 200, 100);
+		this.setBounds(30, 35, 200, 80);
 		
 		this.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 //		this.setBorder(new LineBorder(new Color(0, 0, 0), 2));

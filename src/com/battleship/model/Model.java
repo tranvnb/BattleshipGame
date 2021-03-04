@@ -41,13 +41,20 @@ public class Model {
 		this.hits = hit;
 	}
 	
-	public boolean isSunk(int index) {
-		for(int i = 0; i < hits.length; i++) {
-			if(!this.hits[index].equals(hits[i])) {
-				return false;
+	public boolean isSunk() {
+		for(int i = 0; i < (numShips/shipLength); i++) {
+			int j = i * shipLength;
+			if(this.hits[j].equals("hit")&&this.hits[j+1].equals("hit")&&this.hits[j+2].equals("hit")) {
+				this.hits[j] = "down";
+				this.hits[j+1] = "down";
+				this.hits[j+2] = "down";
+				return true;
 			}
 		}
-		return true;
+		for(String i : this.hits) {
+			System.out.println(i);
+		}
+		return false;
 	}
 	
 	public boolean fireGuess(String guess) {
