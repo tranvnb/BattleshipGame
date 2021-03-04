@@ -12,4 +12,22 @@ public class Helper {
     public static int randomizePosition(int maximum) {
         return random.nextInt(maximum);
     }
+    
+    // TODO: Work on controller
+    // Take guess from event handler and parse it here
+    int parseGuess(String guess) {
+    	String[] alphabet = {"A", "B", "C", "D", "E", "F", "G"};
+    	
+    	if(guess == null || guess.length() != 2 ) {
+    		System.out.println("Enter the valid guess: ");
+    	}
+    	else {
+    		
+    	}
+    	
+    	return 0;
+    }
+    
+    
+
 }

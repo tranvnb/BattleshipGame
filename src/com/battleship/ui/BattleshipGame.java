@@ -11,6 +11,7 @@ import java.awt.Color;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
+import com.battleship.controller.Controller;
 import com.battleship.model.Model;
 
 import javax.swing.JTextField;
@@ -38,6 +39,7 @@ public class BattleshipGame {
 	private JFrame frame;
 	private GameTimer timer;
 	JLayeredPane layeredPane;
+	Controller controller = new Controller();
 
 	/**
 	 * Launch the application.
@@ -109,16 +111,16 @@ public class BattleshipGame {
 		
 
 		// create 64 Panel
-		JPanel arrayPanel[] = new JPanel[64];
+		JPanel arrayPanel[] = new JPanel[49];
 		
-		for(int i = 0; i < 64; i++) {
+		for(int i = 0; i < 49; i++) {
 			arrayPanel[i] = new JPanel();
 		}
 		
 		
 		
 		// create add 44 panel to main panel
-		for(int i = 0; i < 64; i++) {
+		for(int i = 0; i < 49; i++) {
 			arrayPanel[i].setBorder(new LineBorder(new Color(0, 0, 0)));
 			arrayPanel[i].setOpaque(false);
 			panel.add(arrayPanel[i]);
@@ -126,8 +128,8 @@ public class BattleshipGame {
 		}
 		
 		// create 64 label and add 64 label to 64 panel
-		JLabel labelArray[] = new JLabel[64];
-		for(int i = 0; i < 64; i++) {
+		JLabel labelArray[] = new JLabel[49];
+		for(int i = 0; i < 49; i++) {
 			labelArray[i] = new JLabel("");
 			arrayPanel[i].add(labelArray[i]);
 			labelArray[i].setName(String.valueOf(i));
@@ -138,15 +140,16 @@ public class BattleshipGame {
 	
 		 
 		// add even listener on label
-		for(int i = 0; i < 64; i++) {
+		for(int i = 0; i < 49; i++) {
 			labelArray[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
 					if(arg0.getSource() instanceof JLabel) {
 						String text = ((JLabel) arg0.getSource()).getName();
-						
+						System.out.println(text);
 						//----------> UI interaction methods go here
 						//parseGuess method: from 0 to 49 to 00 to 66
+						
 						//checkGuess method: check if guess hit or miss
 						
 						//change the image according to checkGuess logic

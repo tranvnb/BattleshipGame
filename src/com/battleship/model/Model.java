@@ -6,9 +6,9 @@ public class Model {
 	int boardSize = 7;
 	int numShips = 3;
 	int shipLength = 3;
-	int shipsSunk =0;
+	int shipsSunk = 0;
 		
-	int[] model = {boardSize, numShips,shipLength, shipsSunk};
+	int[] model = {boardSize, numShips, shipLength, shipsSunk};
 	private String[]locs;
 	private String[]hits = {"no","no","no"};
 	
@@ -30,16 +30,20 @@ public class Model {
 	public void setHit(String[] hit) {
 		this.hits = hit;
 	}
+	
+	
+	
 	public boolean isSunk() {
-		for(int i =0;i<hits.length;i++) {
+		for(int i =0; i<hits.length; i++) {
 			if(!"hit".equals(hits[i])) {
 				return false;
 			}
 		}
 		return true;
 	}
+	
 	public boolean guess(String guess) {
-		for(int i=0; i<locs.length;i++) {
+		for(int i=0; i<locs.length; i++) {
 			if(guess.equals(locs[i])){
 				this.hits[i] = "hit";
 				return true;
@@ -47,6 +51,7 @@ public class Model {
 		}
 		return false;
 	}
+	
 	@Override
 	public String toString() {
 		return this.locs[0] + " " + this.locs[1] + " " + this.locs[2] + " " +
