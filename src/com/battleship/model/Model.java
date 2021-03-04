@@ -9,7 +9,13 @@ public class Model {
 	int shipsSunk = 0;
 		
 	int[] model = {boardSize, numShips, shipLength, shipsSunk};
+
+	
+	
 	private String[]locs;
+	
+	// TODO: Generate 9 "no" if needed
+	// Move Model class functions or data members from battleship game
 	private String[]hits = {"no","no","no"};
 	
 	public Model() {

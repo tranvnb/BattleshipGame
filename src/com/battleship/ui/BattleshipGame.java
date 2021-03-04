@@ -6,8 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
@@ -16,6 +20,8 @@ import com.battleship.model.Model;
 
 import javax.swing.JTextField;
 import java.awt.Font;
+import java.awt.Graphics;
+
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Canvas;
@@ -57,6 +63,8 @@ public class BattleshipGame {
 		});
 	}
 	
+	
+	
 
 	public JLayeredPane getLayeredPane() {
 		return layeredPane;
@@ -83,6 +91,7 @@ public class BattleshipGame {
 				
 			}
 		});		
+		layeredPane.add(timer, Integer.valueOf(2));
 	}
 
 	/**
@@ -95,22 +104,36 @@ public class BattleshipGame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
+		
 		layeredPane = new JLayeredPane();
 		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
 		layeredPane.setLayout(null);
+		
+		
 		
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		layeredPane.setLayer(panel, 0);
-		panel.setBounds(170, 98, 677, 677);
+		panel.setBounds(180, 124, 677, 676);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panel.setBackground(Color.LIGHT_GRAY);
-		layeredPane.add(panel);
-		panel.setLayout(new GridLayout(8, 8, 2, 2));
+		layeredPane.add(panel, Integer.valueOf(1));
+		panel.setLayout(new GridLayout(7, 7, 2, 2));
 		
-
-		// create 64 Panel
+		// add background image
+		JLabel label = new JLabel("");
+		ImageIcon img = new ImageIcon(this.getClass().getResource("/board.jpg"));
+		label.setIcon(img);
+		label.setBounds(10, 10, 1015, 898);
+		
+		label.setLayout(new GridLayout(9, 11, 2, 2));
+		label.setOpaque(false);
+		layeredPane.add(label, Integer.valueOf(0));
+		
+		
+		
+		// create 49 Panel
 		JPanel arrayPanel[] = new JPanel[49];
 		
 		for(int i = 0; i < 49; i++) {
@@ -127,7 +150,7 @@ public class BattleshipGame {
 			arrayPanel[i].setLayout(new BorderLayout(0, 0));
 		}
 		
-		// create 64 label and add 64 label to 64 panel
+		//create 49 label and add 49 label to 49 panel
 		JLabel labelArray[] = new JLabel[49];
 		for(int i = 0; i < 49; i++) {
 			labelArray[i] = new JLabel("");
@@ -179,6 +202,10 @@ public class BattleshipGame {
 		}} while(collison(ships));
 	
 	}
+	
+	
+	
+	
 		//generate random locations, 00 to 66
 		public static String[] generateShip(int boardSize, int shipLength) {
 			double direction = Math.floor(Math.random()*2);
