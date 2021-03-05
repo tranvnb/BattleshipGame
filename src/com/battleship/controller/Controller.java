@@ -24,10 +24,10 @@ public class Controller {
 			this.guesses++;
 			hit = model.fireGuess(location);
 			if(hit && model.shipsSunk == model.numShips) {
+				// Here, we have to reset the game
 				System.out.println("All ships destroyed");
 			}
 		}
-		
 		return hit;
 	}
 }
