@@ -18,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import java.awt.Font;
+import java.awt.SystemColor;
 
 public class GameTimer extends JPanel{
 
@@ -25,28 +27,41 @@ public class GameTimer extends JPanel{
 	private final JLabel timerLabel;
 	private final JLayeredPane gameBoard;
 	private long startTime = 0L;
-	private final long GAME_TIME = 5;
-	private CallbackFunction callback;
+	private final static int GAME_TIME = 4;
+	private final int FONT_SIZE = 20;
+	private final int WIDTH_OF_TIME_PANEL = 350;
+	private final int HEIGHT_OF_TEXT = 30;
+	private EndGameCallBackFunction callback;
+	private int gameTime;
 
-	public GameTimer(JLayeredPane gameBoard, CallbackFunction callback) throws HeadlessException {
+	public GameTimer(JLayeredPane gameBoard, EndGameCallBackFunction callback) throws HeadlessException {
+		this(gameBoard,GAME_TIME, callback);
+	}
+	
+	public GameTimer(JLayeredPane gameBoard, int gameTime, EndGameCallBackFunction callback) throws HeadlessException {
 		super();
 		this.callback = callback;
+		this.gameTime = gameTime;
 		
 		this.gameBoard = gameBoard;		
-		this.setBounds(30, 30, 200, 100);
+		this.setBounds(30, 30, WIDTH_OF_TIME_PANEL, HEIGHT_OF_TEXT + 100);
+		this.setOpaque(false);
 		
 		this.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-//		this.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 
 		introTimerLabel = new JLabel();
-		introTimerLabel.setPreferredSize(new Dimension(200, 20));
-		introTimerLabel.setText("You have " + GAME_TIME + " seconds for this game");
+		introTimerLabel.setForeground(Color.GREEN);
+		introTimerLabel.setFont(new Font(introTimerLabel.getFont().getName(), introTimerLabel.getFont().getStyle(), FONT_SIZE));
+		introTimerLabel.setPreferredSize(new Dimension(WIDTH_OF_TIME_PANEL, HEIGHT_OF_TEXT));
+		introTimerLabel.setText("You have " + this.gameTime + " seconds for this game");
 		this.add(introTimerLabel);
 		
 		
 		this.timerLabel = new JLabel();
+		timerLabel.setForeground(Color.GREEN);
+		timerLabel.setFont(new Font(timerLabel.getFont().getName(), introTimerLabel.getFont().getStyle() | Font.BOLD, FONT_SIZE));
 		this.timerLabel.setText("This is timer for game");
-//		this.timerLabel.setPreferredSize(new Dimension(200, 20));
+		introTimerLabel.setPreferredSize(new Dimension(WIDTH_OF_TIME_PANEL, HEIGHT_OF_TEXT));
 		this.add(timerLabel);
 		
 		if (this.gameBoard != null) {			
@@ -66,17 +81,19 @@ public class GameTimer extends JPanel{
 				// TODO Auto-generated method stub
 				long elapsedTime = (new Date()).getTime() - startTime;
 				timerLabel.setText((elapsedTime / 1000) + " Seconds");
-				if (elapsedTime / 1000 >= GAME_TIME) {
+				if (elapsedTime / 1000 >= gameTime) {
 					timerLabel.setText("You Lose!");
 					timer.cancel();
 					timer.purge();
-					callback.endGame();
+					if (callback != null) {
+						callback.endGame();
+					}
 				}
 			}
 		}, 0, 1000);
 	}
 	
-	public interface CallbackFunction {
+	public interface EndGameCallBackFunction {
 		public void endGame();
 	}
 	
