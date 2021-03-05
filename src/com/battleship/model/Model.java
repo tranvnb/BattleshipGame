@@ -12,8 +12,6 @@ public class Model {
 	
 	private String[] locs;
 	
-	// TODO: Generate 9 "no" if needed
-	// Move Model class functions or data members from battleship game
 	private String[]hits = {
 			"no","no","no",
 			"no","no","no",

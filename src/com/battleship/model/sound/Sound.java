@@ -12,7 +12,7 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public abstract class Sound implements LineListener {
+public abstract class Sound {
 
 	private String soundFilePath;
 	private SoundCallbackFunction callback;
@@ -40,7 +40,18 @@ public abstract class Sound implements LineListener {
 			Line.Info linfo = new Line.Info(Clip.class);
 			Line line = AudioSystem.getLine(linfo);
 			clip = (Clip) line;
-			clip.addLineListener(this);
+			clip.addLineListener(new LineListener() {
+				
+				@Override
+				public void update(LineEvent event) {
+					LineEvent.Type type = event.getType();
+					if (type == LineEvent.Type.STOP) {
+						if (callback != null) {
+							callback.actionAfterSound();
+						}
+					}
+				}
+			});
 			file = new File(soundFilePath).getAbsoluteFile();
 			audioInputStream = AudioSystem.getAudioInputStream(file);
 			clip.open(audioInputStream);
@@ -59,15 +70,6 @@ public abstract class Sound implements LineListener {
 		}
 	}
 
-	@Override
-	public void update(LineEvent event) {
-		LineEvent.Type type = event.getType();
-		if (type == LineEvent.Type.STOP) {
-			if (this.callback != null) {
-				this.callback.actionAfterSound();
-			}
-		}
-	}
 
 	public void setCallback(SoundCallbackFunction callback) {
 		this.callback = callback;
