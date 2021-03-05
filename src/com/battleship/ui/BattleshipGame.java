@@ -17,6 +17,7 @@ import javax.swing.border.LineBorder;
 
 import com.battleship.controller.Controller;
 import com.battleship.model.Model;
+import com.battleship.view.View;
 
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -28,6 +29,7 @@ import java.awt.Canvas;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +50,7 @@ public class BattleshipGame {
 	Controller controller;
 	public static Model model;
 	Model[] ships;
-
+	View view;
 	/**
 	 * Launch the application.
 	 */
@@ -89,6 +91,8 @@ public class BattleshipGame {
 			@Override
 			public void endGame() {
 				JOptionPane.showMessageDialog(null, "Sorry, you lost!");
+				//Close game
+				//frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 				///TODO: Playing sound
 				
 			}
@@ -134,7 +138,6 @@ public class BattleshipGame {
 		layeredPane.add(label, Integer.valueOf(0));
 		
 		
-		
 		// create 49 Panel
 		JPanel arrayPanel[] = new JPanel[49];
 		
@@ -177,11 +180,11 @@ public class BattleshipGame {
 				ships[i] = new Model(generateShip(boardSize, shipLength));
 			}
 		} while(collison(ships));
+
 		
-		
-		
+		view = new View(layeredPane,frame);
 		// Initializing and passing model to controller
-		controller = new Controller(model);
+		controller = new Controller(model,view);
 		
 		// add even listener on label
 		for(int i = 0; i < 49; i++) {
@@ -192,11 +195,6 @@ public class BattleshipGame {
 						String guessAsInt = ((JLabel) arg0.getSource()).getName();
 						boolean hit;
 						//----------> UI interaction methods go here
-						//parseGuess method: from 0 to 49 to 00 to 66
-						//checkGuess method: check if guess hit or miss
-						
-						// Parsing is done within the controller package using helper class
-						// This also checks if its a hit or miss
 						hit = controller.processGuess(guessAsInt); 
 						
 						//change the image according to checkGuess logic
@@ -207,14 +205,10 @@ public class BattleshipGame {
 							((JLabel) arg0.getSource()).setIcon(new ImageIcon("images/miss.png")); //change the path to your image
 						}
 						
-						
 						//centered the image on the label
 						((JLabel) arg0.getSource()).setHorizontalAlignment(SwingConstants.CENTER);
 						((JLabel) arg0.getSource()).setVerticalAlignment(SwingConstants.CENTER);
-						JOptionPane.showMessageDialog(null, guessAsInt); //testing click
 						
-						//checkSunk: check if any ship is sunk > redirect to view.Display
-						//checkifWon: check shipsSunk == NumShips > redirect to view.Display
 					}	
 				}
 			});
@@ -274,4 +268,5 @@ public class BattleshipGame {
 			}
 			return false;
 		}
+
 }
