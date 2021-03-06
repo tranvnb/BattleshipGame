@@ -1,4 +1,4 @@
-package com.battleship.ui;
+package com.battleship.ui.view;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -27,7 +27,7 @@ public class GameTimer extends JPanel{
 	private final JLabel timerLabel;
 	private final JLayeredPane gameBoard;
 	private long startTime = 0L;
-	private final static int GAME_TIME = 4;
+	private final static int GAME_TIME = 60;
 	private final int FONT_SIZE = 20;
 	private final int WIDTH_OF_TIME_PANEL = 350;
 	private final int HEIGHT_OF_TEXT = 30;

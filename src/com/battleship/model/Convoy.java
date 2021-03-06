@@ -1,7 +1,7 @@
 package com.battleship.model;
 
 // This is the model class and we will create this as it is in the example project
-public class Model {
+public class Convoy {
 
 	int boardSize = 7;
 	public int numShips = 9;
@@ -19,7 +19,7 @@ public class Model {
 			};
 	
 	
-	public Model(String[]loc) {
+	public Convoy(String[]loc) {
 		this.locs= loc;
 	}
 	

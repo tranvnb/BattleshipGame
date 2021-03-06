@@ -16,8 +16,9 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
 import com.battleship.controller.Controller;
-import com.battleship.model.Model;
-import com.battleship.view.View;
+import com.battleship.model.Convoy;
+import com.battleship.ui.view.GameTimer;
+import com.battleship.ui.view.GameStatusBoard;
 
 import javax.swing.JTextField;
 import java.awt.Font;
@@ -48,15 +49,12 @@ public class BattleshipGame {
 	private GameTimer timer;
 	JLayeredPane layeredPane;
 	Controller controller;
-	public static Model model;
+	public static Convoy convoy;
 	private JLabel labelArray[];
-	Model[] ships;
-<<<<<<< HEAD
-	View view;
-=======
+	Convoy[] ships;
+	GameStatusBoard gameStatus;
 	private boolean isLoading = false;
 
->>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 	/**
 	 * Launch the application.
 	 */
@@ -82,7 +80,7 @@ public class BattleshipGame {
 	 */
 	public BattleshipGame() {
 		initialize();
-//		initializeTimer();
+		initializeTimer();
 	}
 
 	private void initializeTimer() {
@@ -91,16 +89,7 @@ public class BattleshipGame {
 
 			@Override
 			public void endGame() {
-<<<<<<< HEAD
-				JOptionPane.showMessageDialog(null, "Sorry, you lost!");
-				//Close game
-				//frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
-				///TODO: Playing sound
-				
-=======
 				controller.endGame();
-
->>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 			}
 		});
 		layeredPane.add(timer, Integer.valueOf(2));
@@ -118,6 +107,9 @@ public class BattleshipGame {
 		}
 	}
 
+	public GameStatusBoard getGameStatus () {
+		return this.gameStatus;
+	}
 	
 
 	public boolean isLoading() {
@@ -155,16 +147,7 @@ public class BattleshipGame {
 		// add background image
 		JLabel backgroundImage = new JLabel("");
 		ImageIcon img = new ImageIcon(this.getClass().getResource("/board.jpg"));
-<<<<<<< HEAD
-		label.setIcon(img);
-		label.setBounds(10, 10, 1015, 898);
 		
-		label.setLayout(new GridLayout(9, 11, 2, 2));
-		label.setOpaque(false);
-		layeredPane.add(label, Integer.valueOf(0));
-		
-		
-=======
 		backgroundImage.setIcon(img);
 		backgroundImage.setBounds(10, 10, 1015, 898);
 
@@ -172,7 +155,6 @@ public class BattleshipGame {
 		backgroundImage.setOpaque(false);
 		layeredPane.add(backgroundImage, Integer.valueOf(0));
 
->>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 		// create 49 Panel
 		JPanel arrayPanel[] = new JPanel[49];
 
@@ -203,58 +185,28 @@ public class BattleshipGame {
 		int boardSize = 7;
 		int shipLength = 3;
 
-		ships = new Model[numShips];
+		ships = new Convoy[numShips];
 		do {
 			for (int i = 0; i < numShips; i++) {
-				ships[i] = new Model(generateShip(boardSize, shipLength));
+				ships[i] = new Convoy(generateShip(boardSize, shipLength));
 			}
-<<<<<<< HEAD
 		} while(collison(ships));
 
 		
-		view = new View(layeredPane,frame);
+		gameStatus = new GameStatusBoard(layeredPane,frame);
 		// Initializing and passing model to controller
-		controller = new Controller(model,view);
-		
-=======
-		} while (collison(ships));
+		controller = new Controller(this, convoy);
 
-		// Initializing and passing model to controller
-		controller = new Controller(this, model);
-
->>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 		// add even listener on label
 		for (int i = 0; i < 49; i++) {
 			final int position = i;
 			labelArray[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
-<<<<<<< HEAD
-					if(arg0.getSource() instanceof JLabel) {
-						String guessAsInt = ((JLabel) arg0.getSource()).getName();
-						boolean hit;
-						//----------> UI interaction methods go here
-						hit = controller.processGuess(guessAsInt); 
-						
-						//change the image according to checkGuess logic
-						if(hit) {
-							((JLabel) arg0.getSource()).setIcon(new ImageIcon("images/ship.png")); //change the path to your image
-						}
-						else {
-							((JLabel) arg0.getSource()).setIcon(new ImageIcon("images/miss.png")); //change the path to your image
-						}
-						
-						//centered the image on the label
-						((JLabel) arg0.getSource()).setHorizontalAlignment(SwingConstants.CENTER);
-						((JLabel) arg0.getSource()).setVerticalAlignment(SwingConstants.CENTER);
-						
-					}	
-=======
 					if (!isLoading) {				
 						isLoading = true;
 						controller.processGuess(position);
 					}
->>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 				}
 			});
 		}
@@ -285,7 +237,7 @@ public class BattleshipGame {
 	}
 
 	// collision check method
-	public static boolean collison(Model[] ships) {
+	public static boolean collison(Convoy[] ships) {
 		List<String> allLocs = new ArrayList<>();
 		for (int i = 0; i < ships.length; i++) {
 			for (int j = 0; j < ships[i].getLoc().length; j++) {
@@ -296,8 +248,6 @@ public class BattleshipGame {
 			Collections.addAll(allLocs, ships[i].getLoc());
 		}
 
-<<<<<<< HEAD
-=======
 		// Here I used allLocs to create a String Array
 		// This String array will be used to create an object of model class
 		String[] locsArray = new String[9];
@@ -305,7 +255,7 @@ public class BattleshipGame {
 			locsArray[i] = allLocs.get(i);
 		}
 
-		model = new Model(locsArray);
+		convoy = new Convoy(locsArray);
 
 		System.out.println("ships locations: ");
 		System.out.println();
@@ -314,5 +264,4 @@ public class BattleshipGame {
 		}
 		return false;
 	}
->>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 }

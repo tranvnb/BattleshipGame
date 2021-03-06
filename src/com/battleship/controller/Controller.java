@@ -5,8 +5,7 @@ import java.io.IOException;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import com.battleship.model.Model;
-import com.battleship.view.View;
+import com.battleship.model.Convoy;
 import com.battleship.ui.BattleshipGame;
 import com.battleship.model.sound.*;
 
@@ -14,16 +13,8 @@ import com.battleship.model.sound.*;
 public class Controller {
 	int guesses = 0;
 	Helper helper = new Helper();
-	Model model;
-	View view;
-	
-	public Controller(Model model, View view) {
-		super();
-		this.model = model;
-		this.view = view;
-	}
 
-	Model convoy;
+	Convoy convoy;
 	FiringSound firingSound;
 	LostSound lostSound;
 	SunkSound sunkSound;
@@ -31,12 +22,12 @@ public class Controller {
 	MissSound missSound;
 	BattleshipGame battleshipGame;
 
-	public Controller(Model convoy) {
+	public Controller(Convoy convoy) {
 		super();
 		this.convoy = convoy;
 	}
 
-	public Controller(BattleshipGame battleshipGame, Model convoy) {
+	public Controller(BattleshipGame battleshipGame, Convoy convoy) {
 		this.battleshipGame = battleshipGame;
 		this.convoy = convoy;
 		this.firingSound = new FiringSound();
@@ -52,14 +43,24 @@ public class Controller {
 			@Override
 			public void actionAfterSound() {
 				try {
+					String location = helper.parseGuess(position + "");
 					boolean hit = false;
 
-					if (position >= 0) {
+					if (location != null) {
 						guesses++;
-						hit = convoy.fireGuess(String.valueOf(position));
-						if (hit && convoy.shipsSunk == convoy.numShips) {
-							System.out.println("All ships destroyed");
-							wonSound.play();
+						hit = convoy.fireGuess(location);
+						if(hit) {
+							battleshipGame.getGameStatus().displayHit(guesses);
+							if(convoy.isSunk()) {
+								battleshipGame.getGameStatus().displaySunk(guesses);
+								if(convoy.shipsSunk == convoy.numShips) {
+									System.out.println("All ships destroyed");
+									battleshipGame.getGameStatus().displayWON(guesses);
+								}
+							}
+						}
+						else {
+							battleshipGame.getGameStatus().displayMiss(guesses);
 						}
 					}
 					
@@ -84,31 +85,6 @@ public class Controller {
 			e.printStackTrace();
 		}
 
-	}
-
-	public boolean processGuess(String guess) {
-		String location = helper.parseGuess(guess);
-		boolean hit = false;
-
-		if (location != null) {
-			this.guesses++;
-			hit = model.fireGuess(location);
-			if(hit) {
-				view.displayHit(guesses);
-				if(model.isSunk()) {
-					view.displaySunk(guesses);
-					if(model.shipsSunk == model.numShips) {
-						System.out.println("All ships destroyed");
-						view.displayWON(guesses);
-					}
-				}
-			}
-			else {
-				view.displayMiss(guesses);
-			}
-		}
-
-		return hit;
 	}
 
 	public void endGame() {
