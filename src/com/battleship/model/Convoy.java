@@ -49,9 +49,10 @@ public class Convoy {
 				return true;
 			}
 		}
-		for(String i : this.hits) {
-			System.out.println(i);
-		}
+//		console check for convoy hit > down 
+//		for(String i : this.hits) {
+//			System.out.println(i);
+//		}
 		return false;
 	}
 	
@@ -60,10 +61,11 @@ public class Convoy {
 		for(int i=0; i<locs.length; i++) {
 			if(guess.equals(locs[i])){
 				if(this.hits[i].equals("hit")) {
-					System.out.println("Already hit");
 					return true;
 				}
 				else {
+					//console check for hit
+					//System.out.println("You hit");
 					this.hits[i] = "hit";
 					
 					shipsSunk++;
@@ -71,13 +73,8 @@ public class Convoy {
 				}
 			}
 		}
-		System.out.println("You missed");
+		//console check for miss
+		//System.out.println("You missed");
 		return false;
 	}
-	
-	@Override
-	public String toString() {
-		return this.locs[0] + " " + this.locs[1] + " " + this.locs[2] + " " +
-				this.hits[0] + " " + this.hits[1] + " " + this.hits[2] + " ";
-	}	
 }
