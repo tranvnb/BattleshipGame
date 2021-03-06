@@ -15,7 +15,6 @@ import com.battleship.model.sound.*;
 public class Controller {
 	int guesses = 0;
 	Helper helper = new Helper();
-	GameTimer gameTimer;
 	
 	Convoy convoy;
 	FiringSound firingSound;

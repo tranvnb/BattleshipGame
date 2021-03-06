@@ -241,11 +241,11 @@ public class BattleshipGame {
 		convoy = new Convoy(locsArray);
 
 // 		Console for ships locations
-		System.out.println("ships locations: ");
-		System.out.println();
-		for (String i : locsArray) {
-			System.out.print(i + " ");
-		}
+//		System.out.println("ships locations: ");
+//		System.out.println();
+//		for (String i : locsArray) {
+//			System.out.print(i + " ");
+//		}
 		return false;
 	}
 }
