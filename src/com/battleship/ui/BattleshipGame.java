@@ -49,8 +49,14 @@ public class BattleshipGame {
 	JLayeredPane layeredPane;
 	Controller controller;
 	public static Model model;
+	private JLabel labelArray[];
 	Model[] ships;
+<<<<<<< HEAD
 	View view;
+=======
+	private boolean isLoading = false;
+
+>>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 	/**
 	 * Launch the application.
 	 */
@@ -66,38 +72,60 @@ public class BattleshipGame {
 			}
 		});
 	}
-	
-	
-	
 
 	public JLayeredPane getLayeredPane() {
 		return layeredPane;
 	}
-
-
 
 	/**
 	 * Create the application.
 	 */
 	public BattleshipGame() {
 		initialize();
-		initializeTimer();
+//		initializeTimer();
 	}
-	
+
 	private void initializeTimer() {
-		///TODO: this call back function should be put on Controller file
-		timer = new GameTimer(this.getLayeredPane(), new GameTimer.CallbackFunction() {
-			
+		/// TODO: this call back function should be put on Controller file
+		timer = new GameTimer(this.getLayeredPane(), new GameTimer.EndGameCallBackFunction() {
+
 			@Override
 			public void endGame() {
+<<<<<<< HEAD
 				JOptionPane.showMessageDialog(null, "Sorry, you lost!");
 				//Close game
 				//frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 				///TODO: Playing sound
 				
+=======
+				controller.endGame();
+
+>>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 			}
-		});		
+		});
 		layeredPane.add(timer, Integer.valueOf(2));
+	}
+
+	public void popUpMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
+	}
+
+	public void updateFiringResultAt(int position, boolean isHit) {
+		if (isHit) {
+			labelArray[position].setIcon(new ImageIcon("images/ship.png"));
+		} else {
+			labelArray[position].setIcon(new ImageIcon("images/miss.png"));
+		}
+	}
+
+	
+
+	public boolean isLoading() {
+		return isLoading;
+	}
+
+	public void setLoading(boolean isLoading) {
+		this.isLoading = isLoading;
 	}
 
 	/**
@@ -109,14 +137,11 @@ public class BattleshipGame {
 		frame.setBounds(100, 100, 1039, 898);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
-		
+
 		layeredPane = new JLayeredPane();
 		frame.getContentPane().add(layeredPane, BorderLayout.CENTER);
 		layeredPane.setLayout(null);
-		
-		
-		
+
 		JPanel panel = new JPanel();
 		panel.setOpaque(false);
 		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -126,10 +151,11 @@ public class BattleshipGame {
 		panel.setBackground(Color.LIGHT_GRAY);
 		layeredPane.add(panel, Integer.valueOf(1));
 		panel.setLayout(new GridLayout(7, 7, 2, 2));
-		
+
 		// add background image
-		JLabel label = new JLabel("");
+		JLabel backgroundImage = new JLabel("");
 		ImageIcon img = new ImageIcon(this.getClass().getResource("/board.jpg"));
+<<<<<<< HEAD
 		label.setIcon(img);
 		label.setBounds(10, 10, 1015, 898);
 		
@@ -138,47 +164,51 @@ public class BattleshipGame {
 		layeredPane.add(label, Integer.valueOf(0));
 		
 		
+=======
+		backgroundImage.setIcon(img);
+		backgroundImage.setBounds(10, 10, 1015, 898);
+
+		backgroundImage.setLayout(new GridLayout(9, 11, 2, 2));
+		backgroundImage.setOpaque(false);
+		layeredPane.add(backgroundImage, Integer.valueOf(0));
+
+>>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 		// create 49 Panel
 		JPanel arrayPanel[] = new JPanel[49];
-		
-		for(int i = 0; i < 49; i++) {
+
+		for (int i = 0; i < 49; i++) {
 			arrayPanel[i] = new JPanel();
 		}
-		
-		
-		
+
 		// create add 44 panel to main panel
-		for(int i = 0; i < 49; i++) {
+		for (int i = 0; i < 49; i++) {
 			arrayPanel[i].setBorder(new LineBorder(new Color(0, 0, 0)));
 			arrayPanel[i].setOpaque(false);
 			panel.add(arrayPanel[i]);
 			arrayPanel[i].setLayout(new BorderLayout(0, 0));
 		}
-		
-		//create 49 label and add 49 label to 49 panel
-		JLabel labelArray[] = new JLabel[49];
-		for(int i = 0; i < 49; i++) {
+
+		// create 49 label and add 49 label to 49 panel
+		labelArray = new JLabel[49];
+		for (int i = 0; i < 49; i++) {
 			labelArray[i] = new JLabel("");
 			arrayPanel[i].add(labelArray[i]);
 			labelArray[i].setName(String.valueOf(i));
 			labelArray[i].setOpaque(false);
 		}
-		
-	
-	
-		 
-		
-		//spawning 3 ships 
+
+		// spawning 3 ships
 		int numShips = 3;
 		int shipsSunk = 0;
 		int boardSize = 7;
 		int shipLength = 3;
-		
+
 		ships = new Model[numShips];
 		do {
-			for(int i=0; i<numShips; i++) {
+			for (int i = 0; i < numShips; i++) {
 				ships[i] = new Model(generateShip(boardSize, shipLength));
 			}
+<<<<<<< HEAD
 		} while(collison(ships));
 
 		
@@ -186,11 +216,20 @@ public class BattleshipGame {
 		// Initializing and passing model to controller
 		controller = new Controller(model,view);
 		
+=======
+		} while (collison(ships));
+
+		// Initializing and passing model to controller
+		controller = new Controller(this, model);
+
+>>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 		// add even listener on label
-		for(int i = 0; i < 49; i++) {
+		for (int i = 0; i < 49; i++) {
+			final int position = i;
 			labelArray[i].addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent arg0) {
+<<<<<<< HEAD
 					if(arg0.getSource() instanceof JLabel) {
 						String guessAsInt = ((JLabel) arg0.getSource()).getName();
 						boolean hit;
@@ -210,63 +249,70 @@ public class BattleshipGame {
 						((JLabel) arg0.getSource()).setVerticalAlignment(SwingConstants.CENTER);
 						
 					}	
+=======
+					if (!isLoading) {				
+						isLoading = true;
+						controller.processGuess(position);
+					}
+>>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 				}
 			});
 		}
-		
+
 	}
-	
-		//generate random locations, 00 to 66
-		public static String[] generateShip(int boardSize, int shipLength) {
-			double direction = Math.floor(Math.random()*2);
-			int row, col;
-			if(direction == 1) {
-				row = (int)Math.floor(Math.random() * boardSize);
-				col = (int)Math.floor(Math.random() * (boardSize - shipLength + 1));
-			}
-			else { // vertical
-				row = (int)Math.floor(Math.random() * (boardSize - shipLength + 1));
-				col = (int)Math.floor(Math.random() * boardSize);
-			}
-			
-			String[] newShipLocs = new String[shipLength];
-			for (int i = 0; i < shipLength; i++) {
-				if (direction == 1) {
-					newShipLocs[i] = (row + "" + (col + i));
-				} else {
-					newShipLocs[i] =((row + i) + "" + col);
-				}
-			}
-			return newShipLocs;
-		}
-	
-		//collision check method
-		public static boolean collison(Model[] ships) {
-			List<String> allLocs = new ArrayList<>();
-			for(int i=0;i<ships.length;i++) {
-				for(int j=0; j<ships[i].getLoc().length;j++) {
-					if(allLocs.contains(ships[i].getLoc()[j])) {
-						return true;
-					}		
-				}
-				Collections.addAll(allLocs, ships[i].getLoc());
-			}
-			
-			// Here I used allLocs to create a String Array
-			// This String array will be used to create an object of model class
-			String[] locsArray = new String[9];
-			for(int i = 0; i < locsArray.length; i++) {
-				locsArray[i] = allLocs.get(i);
-			}
-			
-			model = new Model(locsArray);
-			
-			System.out.println("ships locations: ");
-			System.out.println();
-			for(String i : locsArray) {
-				System.out.print(i + " ");
-			}
-			return false;
+
+	// generate random locations, 00 to 66
+	public static String[] generateShip(int boardSize, int shipLength) {
+		double direction = Math.floor(Math.random() * 2);
+		int row, col;
+		if (direction == 1) {
+			row = (int) Math.floor(Math.random() * boardSize);
+			col = (int) Math.floor(Math.random() * (boardSize - shipLength + 1));
+		} else { // vertical
+			row = (int) Math.floor(Math.random() * (boardSize - shipLength + 1));
+			col = (int) Math.floor(Math.random() * boardSize);
 		}
 
+		String[] newShipLocs = new String[shipLength];
+		for (int i = 0; i < shipLength; i++) {
+			if (direction == 1) {
+				newShipLocs[i] = (row + "" + (col + i));
+			} else {
+				newShipLocs[i] = ((row + i) + "" + col);
+			}
+		}
+		return newShipLocs;
+	}
+
+	// collision check method
+	public static boolean collison(Model[] ships) {
+		List<String> allLocs = new ArrayList<>();
+		for (int i = 0; i < ships.length; i++) {
+			for (int j = 0; j < ships[i].getLoc().length; j++) {
+				if (allLocs.contains(ships[i].getLoc()[j])) {
+					return true;
+				}
+			}
+			Collections.addAll(allLocs, ships[i].getLoc());
+		}
+
+<<<<<<< HEAD
+=======
+		// Here I used allLocs to create a String Array
+		// This String array will be used to create an object of model class
+		String[] locsArray = new String[9];
+		for (int i = 0; i < locsArray.length; i++) {
+			locsArray[i] = allLocs.get(i);
+		}
+
+		model = new Model(locsArray);
+
+		System.out.println("ships locations: ");
+		System.out.println();
+		for (String i : locsArray) {
+			System.out.print(i + " ");
+		}
+		return false;
+	}
+>>>>>>> 1a433c325fd90c978f3876ba6b5456970116fa55
 }
