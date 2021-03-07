@@ -53,10 +53,6 @@ public class Controller {
 							battleshipGame.getGameStatus().displayHit(guesses);
 							if(convoy.isSunk()) {
 								battleshipGame.getGameStatus().displaySunk(guesses);
-								if(convoy.shipsSunk == convoy.numShips) {
-									System.out.println("All ships destroyed");
-									battleshipGame.getGameStatus().displayWON(guesses);
-								}
 							}
 						}
 						else {
@@ -72,6 +68,12 @@ public class Controller {
 
 					battleshipGame.updateFiringResultAt(position, hit);
 					battleshipGame.setLoading(false);
+					
+					if(convoy.shipsSunk == convoy.numShips) {
+						System.out.println("All ships destroyed");
+						battleshipGame.displayWON(guesses);
+					}
+					
 				} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
 					e.printStackTrace();
 				}
@@ -88,6 +90,11 @@ public class Controller {
 	}
 
 	public void endGame() {
-		this.battleshipGame.popUpMessage("Sorry you lost!");
+		this.battleshipGame.getGameTimer().stopTimer();
+		battleshipGame.displayLOSE();
+	}
+
+	public void resetGame() {
+		this.battleshipGame.resetGame();
 	}
 }

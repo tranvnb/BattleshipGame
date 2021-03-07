@@ -33,6 +33,8 @@ public class GameTimer extends JPanel{
 	private final int HEIGHT_OF_TEXT = 30;
 	private EndGameCallBackFunction callback;
 	private int gameTime;
+	private Timer timer;
+	private TimerTask timerTask;
 
 	public GameTimer(JLayeredPane gameBoard, EndGameCallBackFunction callback) throws HeadlessException {
 		this(gameBoard,GAME_TIME, callback);
@@ -69,12 +71,12 @@ public class GameTimer extends JPanel{
 		}
 		
 		startTime = (new Date()).getTime();
-		startGame();
+		startTimer();
 	}
 	
-	public void startGame() {
-		Timer timer = new Timer();
-		timer.schedule(new TimerTask() {
+	public void startTimer() {
+		timer = new Timer();
+		timerTask = new TimerTask() {
 			
 			@Override
 			public void run() {
@@ -83,14 +85,29 @@ public class GameTimer extends JPanel{
 				timerLabel.setText((elapsedTime / 1000) + " Seconds");
 				if (elapsedTime / 1000 >= gameTime) {
 					timerLabel.setText("You Lose!");
-					timer.cancel();
-					timer.purge();
+					stopTimer();
 					if (callback != null) {
 						callback.endGame();
 					}
 				}
 			}
-		}, 0, 1000);
+		};
+		timer.schedule(timerTask, 0, 1000);
+	}
+	
+	public void stopTimer () {
+		if (timer != null) {
+			timerTask.cancel();
+			timer.cancel();
+			timer.purge();
+		}
+	}
+	
+	public void reset() {
+		this.timerLabel.setText("This is timer for game");
+		introTimerLabel.setText("You have " + this.gameTime + " seconds for this game");
+		startTime = (new Date()).getTime();
+		startTimer();
 	}
 	
 	public interface EndGameCallBackFunction {
