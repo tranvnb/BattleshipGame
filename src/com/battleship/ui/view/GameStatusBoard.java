@@ -25,9 +25,7 @@ public class GameStatusBoard extends JPanel {
 		
 		JLabel guessDisplay = new JLabel("");
 		guessDisplay.setOpaque(false);
-		guessDisplay.setBorder(new LineBorder(new Color(0, 0, 0)));
-		guessDisplay.setBounds(700, 35 , 300,80);
-//		guessDisplay.setBackground(Color.WHITE);
+		guessDisplay.setBounds(650, 35 , 350,80);
 		guessDisplay.setHorizontalAlignment(SwingConstants.CENTER);
 		guessDisplay.setForeground(Color.GREEN);
 		guessDisplay.setFont(new Font(guessDisplay.getFont().getName(), guessDisplay.getFont().getStyle(), 20));
@@ -48,13 +46,11 @@ public class GameStatusBoard extends JPanel {
 	}
 	public void displayWON(int guesses) {
 		guessDisplay.setText("You won in " + guesses + " guesses!");
-		int dialogButton = JOptionPane.YES_NO_OPTION;
-		int dialogResult = JOptionPane.showConfirmDialog(this, "You won!!! Do you want to play again?", "Game Over",dialogButton);
-		if(dialogResult == 0) {
-			//TODO: reset board method goes here
-		} else {
-			this.game.dispatchEvent(new WindowEvent(game, WindowEvent.WINDOW_CLOSING));
-		}
+		JOptionPane.showMessageDialog(game, "Congratulations !!! You Won!!!","Game Over",JOptionPane.INFORMATION_MESSAGE);	
+		//this.game.dispatchEvent(new WindowEvent(game, WindowEvent.WINDOW_CLOSING));
 	}
-	
+	public void displayLOSE() {
+		JOptionPane.showMessageDialog(game, "Sorry, you lost!","Game Over",JOptionPane.INFORMATION_MESSAGE);	
+		//this.game.dispatchEvent(new WindowEvent(game, WindowEvent.WINDOW_CLOSING));
+	}
 }
