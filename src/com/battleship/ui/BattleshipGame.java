@@ -16,6 +16,7 @@ import com.battleship.ui.view.GameStatusBoard;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -73,7 +74,7 @@ public class BattleshipGame {
 
 			@Override
 			public void endGame() {
-				controller.endGame();
+				displayLOSE();
 			}
 		});
 		layeredPane.add(timer, Integer.valueOf(2));
@@ -95,13 +96,61 @@ public class BattleshipGame {
 		return this.gameStatus;
 	}
 	
-
+	public GameTimer getGameTimer () {
+		return this.timer;
+	}
+	
 	public boolean isLoading() {
 		return isLoading;
 	}
 
 	public void setLoading(boolean isLoading) {
 		this.isLoading = isLoading;
+	}
+	
+	public void displayWON(int guesses) {
+		this.gameStatus.displayWON(guesses);
+		int dialogButton = JOptionPane.YES_NO_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog(null, "You won!!! Do you want to play again?", "Game Over",dialogButton);
+		if(dialogResult == 0) {
+			controller.resetGame();
+		} else {
+			this.frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		}
+	}
+	
+	public void displayLOSE () {
+		int dialogButton = JOptionPane.YES_NO_OPTION;
+		int dialogResult = JOptionPane.showConfirmDialog(null, "You Lost!!! Do you want to play again?", "Game Over",dialogButton);
+		if(dialogResult == 0) {
+			controller.resetGame();
+		} else {
+			this.frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
+		}
+	}
+	
+	public void resetGame () {
+		gameStatus.reset();
+		timer.reset();
+		spawningNewShipsLocation();
+		for (int i = 0; i < 49; i++) {
+			labelArray[i].setIcon(null);
+		}
+	}
+	
+	public void spawningNewShipsLocation () {
+		// spawning 3 ships
+		int numShips = 3;
+		int shipsSunk = 0;
+		int boardSize = 7;
+		int shipLength = 3;
+
+		ships = new Convoy[numShips];
+		do {
+			for (int i = 0; i < numShips; i++) {
+				ships[i] = new Convoy(generateShip(boardSize, shipLength));
+			}
+		} while(collison(ships));
 	}
 
 	/**
@@ -163,18 +212,7 @@ public class BattleshipGame {
 			labelArray[i].setOpaque(false);
 		}
 
-		// spawning 3 ships
-		int numShips = 3;
-		int boardSize = 7;
-		int shipLength = 3;
-
-		ships = new Convoy[numShips];
-		do {
-			for (int i = 0; i < numShips; i++) {
-				ships[i] = new Convoy(generateShip(boardSize, shipLength));
-			}
-		} while(collison(ships));
-
+		spawningNewShipsLocation();
 		
 		gameStatus = new GameStatusBoard(layeredPane,frame);
 		// Initializing and passing model to controller

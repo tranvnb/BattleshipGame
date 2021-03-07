@@ -44,6 +44,15 @@ public class GameStatusBoard extends JPanel {
 	public void displaySunk(int guesses) {
 		guessDisplay.setText("Guess " + guesses + ": You sunk my battleship!");
 	}
+
+	public JLabel getText() {
+		return guessDisplay;
+	}
+	
+	public void reset () {
+		guessDisplay.setText("Game has been started...");
+	}
+
 	public void displayWON(int guesses) {
 		guessDisplay.setText("You won in " + guesses + " guesses!");
 		JOptionPane.showMessageDialog(game, "Congratulations !!! You Won!!!","Game Over",JOptionPane.INFORMATION_MESSAGE);	
