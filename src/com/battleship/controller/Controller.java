@@ -72,6 +72,7 @@ public class Controller {
 					if(convoy.shipsSunk == convoy.numShips) {
 						System.out.println("All ships destroyed");
 						battleshipGame.displayWON(guesses);
+						battleshipGame.getGameTimer().stopTimer();
 					}
 					
 				} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
@@ -95,6 +96,8 @@ public class Controller {
 	}
 
 	public void resetGame() {
+		guesses = 0;
 		this.battleshipGame.resetGame();
+		this.battleshipGame.getGameStatus().reset();
 	}
 }
