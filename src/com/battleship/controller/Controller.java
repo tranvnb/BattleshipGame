@@ -100,19 +100,14 @@ public class Controller {
 	}
 
 	public void endGame() {
-//<<<<<<< HEAD
 		battleshipGame.getGameStatus().displayLOSE();
+		this.battleshipGame.getGameTimer().stopTimer();
 		closeGame();
 	}
 	public void closeGame() {
 		battleshipGame.getFrame().dispatchEvent(new WindowEvent(battleshipGame.getFrame(), WindowEvent.WINDOW_CLOSING));
-//=======
-		this.battleshipGame.getGameTimer().stopTimer();
-		battleshipGame.displayLOSE();
 	}
-
 	public void resetGame() {
 		this.battleshipGame.resetGame();
-//>>>>>>> d5886976bde1f62fdc11992cfa2ec7d2d59635d0
 	}
 }
