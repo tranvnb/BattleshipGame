@@ -37,21 +37,6 @@ public class BattleshipGame {
 	GameStatusBoard gameStatus;
 	private boolean isLoading = false;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					BattleshipGame window = new BattleshipGame();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	public JFrame getFrame() {
 		return frame;
 	}
@@ -68,6 +53,21 @@ public class BattleshipGame {
 		initializeTimer();
 	}
 
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					BattleshipGame window = new BattleshipGame();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	private void initializeTimer() {
 		/// TODO: this call back function should be put on Controller file
 		timer = new GameTimer(this.getLayeredPane(), new GameTimer.EndGameCallBackFunction() {
@@ -136,6 +136,7 @@ public class BattleshipGame {
 		for (int i = 0; i < 49; i++) {
 			labelArray[i].setIcon(null);
 		}
+//		convoy = new Convoy(locsArray);
 	}
 	
 	public void spawningNewShipsLocation () {
