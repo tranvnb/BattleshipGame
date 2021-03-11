@@ -1,5 +1,6 @@
 package com.battleship.controller;
 
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import javax.sound.sampled.LineUnavailableException;
@@ -7,13 +8,14 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 import com.battleship.model.Convoy;
 import com.battleship.ui.BattleshipGame;
+import com.battleship.ui.view.GameTimer;
 import com.battleship.model.sound.*;
 
 //This is the controller class and we will create this as it is in the example project
 public class Controller {
 	int guesses = 0;
 	Helper helper = new Helper();
-
+	
 	Convoy convoy;
 	FiringSound firingSound;
 	LostSound lostSound;
@@ -53,6 +55,14 @@ public class Controller {
 							battleshipGame.getGameStatus().displayHit(guesses);
 							if(convoy.isSunk()) {
 								battleshipGame.getGameStatus().displaySunk(guesses);
+								if(convoy.shipsSunk == convoy.numShips) {
+									//console check for winning condition
+									//System.out.println("All ships destroyed");
+									battleshipGame.updateFiringResultAt(position, hit);
+									battleshipGame.getGameStatus().displayWON(guesses);
+									//TODO: timer stop method here
+									closeGame();
+								}
 							}
 						}
 						else {
@@ -91,10 +101,13 @@ public class Controller {
 	}
 
 	public void endGame() {
+		battleshipGame.getGameStatus().displayLOSE();
 		this.battleshipGame.getGameTimer().stopTimer();
-		battleshipGame.displayLOSE();
+		closeGame();
 	}
-
+	public void closeGame() {
+		battleshipGame.getFrame().dispatchEvent(new WindowEvent(battleshipGame.getFrame(), WindowEvent.WINDOW_CLOSING));
+	}
 	public void resetGame() {
 		guesses = 0;
 		this.battleshipGame.resetGame();

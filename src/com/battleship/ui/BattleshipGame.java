@@ -1,18 +1,12 @@
 package com.battleship.ui;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
-
 import javax.swing.JLabel;
 import java.awt.Color;
-import java.awt.Dimension;
-
-import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
 import com.battleship.controller.Controller;
@@ -20,28 +14,16 @@ import com.battleship.model.Convoy;
 import com.battleship.ui.view.GameTimer;
 import com.battleship.ui.view.GameStatusBoard;
 
-import javax.swing.JTextField;
-import java.awt.Font;
-import java.awt.Graphics;
-
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.Canvas;
-import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.swing.ImageIcon;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.CardLayout;
-import java.awt.FlowLayout;
+
 
 public class BattleshipGame {
 
@@ -54,6 +36,22 @@ public class BattleshipGame {
 	Convoy[] ships;
 	GameStatusBoard gameStatus;
 	private boolean isLoading = false;
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public JLayeredPane getLayeredPane() {
+		return layeredPane;
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public BattleshipGame() {
+		initialize();
+		initializeTimer();
+	}
 
 	/**
 	 * Launch the application.
@@ -70,19 +68,6 @@ public class BattleshipGame {
 			}
 		});
 	}
-
-	public JLayeredPane getLayeredPane() {
-		return layeredPane;
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public BattleshipGame() {
-		initialize();
-		initializeTimer();
-	}
-
 	private void initializeTimer() {
 		/// TODO: this call back function should be put on Controller file
 		timer = new GameTimer(this.getLayeredPane(), new GameTimer.EndGameCallBackFunction() {
@@ -151,6 +136,7 @@ public class BattleshipGame {
 		for (int i = 0; i < 49; i++) {
 			labelArray[i].setIcon(null);
 		}
+//		convoy = new Convoy(locsArray);
 	}
 	
 	public void spawningNewShipsLocation () {
@@ -210,7 +196,7 @@ public class BattleshipGame {
 			arrayPanel[i] = new JPanel();
 		}
 
-		// create add 44 panel to main panel
+		// create add 49 panel to main panel
 		for (int i = 0; i < 49; i++) {
 			arrayPanel[i].setBorder(new LineBorder(new Color(0, 0, 0)));
 			arrayPanel[i].setOpaque(false);
@@ -293,11 +279,12 @@ public class BattleshipGame {
 
 		convoy = new Convoy(locsArray);
 
-		System.out.println("ships locations: ");
-		System.out.println();
-		for (String i : locsArray) {
-			System.out.print(i + " ");
-		}
+// 		Console for ships locations
+//		System.out.println("ships locations: ");
+//		System.out.println();
+//		for (String i : locsArray) {
+//			System.out.print(i + " ");
+//		}
 		return false;
 	}
 }
